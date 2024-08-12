@@ -1,6 +1,7 @@
 package main
 
 import (
+	"CRUD-SQL/auth"
 	"CRUD-SQL/handler"
 	"CRUD-SQL/internal/config"
 	"CRUD-SQL/pkg/di"
@@ -57,7 +58,8 @@ func main() {
 
 	r.POST("/register", userHandler.Register)
 	r.POST("/login", userHandler.Login)
-	r.POST("/todo", todoHandler.CreateToDo)
-	r.GET("/todo", todoHandler.GetToDos)
+	r.GET("/logout", auth.SessionMiddleware, userHandler.Logout)
+	r.POST("/todo", auth.SessionMiddleware, todoHandler.CreateToDo)
+	r.GET("/todo", auth.SessionMiddleware, todoHandler.GetToDos)
 	r.Run()
 }

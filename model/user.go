@@ -1,8 +1,12 @@
 package model
 
-import "errors"
+import (
+	"errors"
 
-//Creating structs
+	"golang.org/x/crypto/bcrypt"
+)
+
+// Creating structs
 type User struct {
 	ID   int
 	Name string
@@ -47,6 +51,12 @@ func (u *UserRegister) ValidatingRegistration() error {
 	if u.Password == "" || len(u.Password) > 255 {
 		return errors.New("password is required (length b/w 0 to 255)")
 	}
+	// Hash the password using bcrypt
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), 12)
+	if err != nil {
+		return err
+	}
+	u.Password = string(hashedPassword)
 
 	if u.Email == "" || len(u.Email) > 100 {
 		return errors.New("email is required (length b/w 0 to 100)")

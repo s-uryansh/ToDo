@@ -46,7 +46,7 @@ func GetSession(sessionID string) (session, bool) {
 	return sess, true
 }
 
-func invalidSession(sessionID string) {
+func InvalidSession(sessionID string) {
 	delete(Sessions, sessionID)
 }
 

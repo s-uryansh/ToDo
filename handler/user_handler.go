@@ -95,3 +95,27 @@ func (h *UserHandler) Login(c *gin.Context) {
 	})
 
 }
+
+func (h *UserHandler) Logout(c *gin.Context) {
+	cookie, err := c.Request.Cookie("session_id")
+	if err != nil {
+		fmt.Println("can not request cookie")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "something went wrong",
+		})
+		c.Abort()
+		return
+	}
+	errs := h.userService.Logout(cookie.Value, c)
+	if errs != nil {
+		fmt.Println("Error while logging out")
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "something went wrong",
+		})
+		return
+	}
+	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{
+		"User": "logged out successfully",
+	})
+}

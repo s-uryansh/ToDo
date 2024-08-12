@@ -42,6 +42,7 @@ func (r *userRepository) GetUserByEmail(emial string) (*model.UserRegister, erro
 	return user, nil
 }
 
+
 // func (r *MySQLUserRepository) UpdateUser(u *model.User) error {
 // 	query := ""
 // }
