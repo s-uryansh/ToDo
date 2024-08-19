@@ -48,13 +48,13 @@ A simple ToDo task API built with Go and MariaDB
 
 ### users table
 
-+ | Field    | Type         | Null | Key | Default | Extra          |
-+ +----------+--------------+------+-----+---------+----------------+
-+ | id       | int(11)      | NO   | PRI | NULL    | auto_increment |
-+ | name     | varchar(50)  | NO   |     | NULL    |                |
-+ | email    | varchar(100) | NO   | UNI | NULL    |                |
-+ | password | varchar(255) | NO   |     | NULL    |                |
-+ | role     | varchar(50)  | NO   |     | NULL    |                |
++` | Field    | Type         | Null | Key | Default | Extra          |`
++ +----------+--------------+------+-----+---------+----------------+`
++ `| id       | int(11)      | NO   | PRI | NULL    | auto_increment |`
++ `| name     | varchar(50)  | NO   |     | NULL    |                |`
++ `| email    | varchar(100) | NO   | UNI | NULL    |                |`
++ `| password | varchar(255) | NO   |     | NULL    |                |`
++ `| role     | varchar(50)  | NO   |     | NULL    |                |`
 + +----------+--------------+------+-----+---------+----------------+
 
 ### tasks table
