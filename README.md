@@ -34,13 +34,15 @@ A simple ToDo task API built with Go and MariaDB
 * `POST /login`: Login an existing user
 	+ Request Body: `{"Email": "string", "Password": "string"}`
 	+ Response: `{"username": " logged in successfully"}`
+* `GET /logout`: Logs out current user
+	+ Response: `{"message":"logged out successfully}`
 
     ### Task Endpoints
 
-* `POST /todo`: Create a new task
+* `POST /todo`: Create a new task for logged in user
 	+ Request Body: `{"task": "string", "description": "string" , "status" : "bool" , "UserID" : "int"}`
 	+ Response: `{"message": "todo created successfully"}`
-* `GET /todo` : Get exisiting task
+* `GET /todo` : Get all exisiting task of logged in user
     + Params : `"ID" : "int"`
     + Response: `{"description" : "string" , "task" : "string"}`
 
