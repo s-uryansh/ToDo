@@ -2,6 +2,7 @@ package main
 
 import (
 	"CRUD-SQL/auth"
+	"CRUD-SQL/cache"
 	"CRUD-SQL/handler"
 	"CRUD-SQL/internal/config"
 	"CRUD-SQL/pkg/di"
@@ -10,6 +11,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -17,6 +19,7 @@ import (
 
 func main() {
 	r := gin.Default()
+
 	tmplPath := "../../template/registration_email.html"
 	tmpl, err := template.ParseFiles(tmplPath)
 	if err != nil {
@@ -34,8 +37,6 @@ func main() {
 		fmt.Println("error loading config")
 		return
 	}
-	// log.Println(fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
-	// 	cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName))
 
 	db, errs := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s",
 		cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName))
@@ -44,11 +45,15 @@ func main() {
 		return
 	}
 	defer db.Close()
-
 	Container := di.NewContainer(db, cfg)
-	userHandler := handler.NewUserHandler(Container.UserService)
-	todoHandler := handler.NewToDoHandler(Container.ToDoService)
-	// userHandler := handler.NewUserHandler(userContainer.UserService)
+
+	redisSessionStore, err := cache.NewRedisSessionStore("localhost:6379", "", 0, "myapp:sessions:", 30*time.Minute)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	userHandler := handler.NewUserHandler(Container.UserService, redisSessionStore)
+	todoHandler := handler.NewToDoHandler(Container.ToDoService, "localhost:6379")
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

@@ -3,6 +3,7 @@ package utils
 const (
 	SessionDuration       = 1200
 	SECRET_KEY_TOKEN      = "a6sdas678das8das98dagds97gasfza"
+	REDIS_KEY_TOKEN       = "a6sdas678das8sxdcfvgbhndas98dagds97gasfza"
 	ZipLength             = 6
 	FROM_MAIL             = "gothrowaway28@gmail.com"
 	PASSWORD_MAIL         = "xfhzzfrjckykcvdf"

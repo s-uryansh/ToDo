@@ -8,12 +8,12 @@ A simple ToDo task API built with Go and MariaDB
 * [Getting Started](#getting-started)
 * [API Endpoints](#api-endpoints)
 * [Database Schema](#database-schema)
-* [Contributing](#contributing)
 * [License](#license)
 
 ## Features
 
 * User registration and login functionality
+* Storing user data with Redis
 * Task creation endpoint
 
 ### Prerequisites
@@ -22,7 +22,10 @@ A simple ToDo task API built with Go and MariaDB
 * MariaDB 
 
 ## API Endpoints
-
+* Registering a new user
+* Logging in an existing user
+* Creating a new task
+* Getting an existing task
 ### User Endpoints
 
 * `POST /register`: Register a new user
@@ -40,3 +43,27 @@ A simple ToDo task API built with Go and MariaDB
 * `GET /todo` : Get exisiting task
     + Params : `"ID" : "int"`
     + Response: `{"description" : "string" , "task" : "string"}`
+
+## Database Schema
+
+### users table
+
+| Field    | Type         | Null | Key | Default | Extra          |
++----------+--------------+------+-----+---------+----------------+
+| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(50)  | NO   |     | NULL    |                |
+| email    | varchar(100) | NO   | UNI | NULL    |                |
+| password | varchar(255) | NO   |     | NULL    |                |
+| role     | varchar(50)  | NO   |     | NULL    |                |
++----------+--------------+------+-----+---------+----------------+
+
+### tasks table
+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| user_id     | int(11)      | YES  |     | NULL    |                |
+| task        | varchar(255) | YES  |     | NULL    |                |
+| description | text         | YES  |     | NULL    |                |
+| status      | tinyint(1)   | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+

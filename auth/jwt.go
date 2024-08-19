@@ -81,6 +81,7 @@ func JwtTokenCreate(c *gin.Context) error {
 		Name:    "session_id",
 		Value:   session_id,
 		Expires: time.Now().Add(utils.SessionDuration * time.Second),
+		Path:    "/",
 	})
 	c.Writer.WriteHeader(http.StatusOK)
 	return nil

@@ -1,6 +1,7 @@
 package model
 
 import (
+	"encoding/json"
 	"errors"
 
 	"golang.org/x/crypto/bcrypt"
@@ -42,7 +43,13 @@ func (u *User) ValidateUser() error {
 	}
 	return nil
 }
+func (u *UserRegister) MarshalBinary() ([]byte, error) {
+	return json.Marshal(u)
+}
 
+func (u *UserRegister) UnmarshalBinary(data []byte) error {
+	return json.Unmarshal(data, u)
+}
 func (u *UserRegister) ValidatingRegistration() error {
 	if u.Name == "" || len(u.Name) > 50 {
 		return errors.New("name is required (length b/w 0 to 50)")
@@ -52,11 +59,11 @@ func (u *UserRegister) ValidatingRegistration() error {
 		return errors.New("password is required (length b/w 0 to 255)")
 	}
 	// Hash the password using bcrypt
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), 12)
+	_, err := bcrypt.GenerateFromPassword([]byte(u.Password), 12)
 	if err != nil {
 		return err
 	}
-	u.Password = string(hashedPassword)
+	// u.Password = string(hashedPassword)
 
 	if u.Email == "" || len(u.Email) > 100 {
 		return errors.New("email is required (length b/w 0 to 100)")

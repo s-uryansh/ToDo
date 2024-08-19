@@ -2,9 +2,11 @@ package handler
 
 import (
 	"CRUD-SQL/auth"
+	"CRUD-SQL/cache"
 	"CRUD-SQL/jobs"
 	"CRUD-SQL/model"
 	"CRUD-SQL/service"
+	"CRUD-SQL/utils"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,16 +15,17 @@ import (
 )
 
 type UserHandler struct {
-	userService service.UserService
+	userService  service.UserService
+	sessionStore *cache.RedisSessionStore
 }
 
-func NewUserHandler(userService service.UserService) *UserHandler {
-	return &UserHandler{userService: userService}
-
+func NewUserHandler(userService service.UserService, sessionStore *cache.RedisSessionStore) *UserHandler {
+	return &UserHandler{userService: userService, sessionStore: sessionStore}
 }
 
 func (h *UserHandler) Register(c *gin.Context) {
 	var json model.UserRegister
+
 	if err := c.ShouldBindJSON(&json); err != nil {
 		fmt.Println("json")
 
@@ -31,6 +34,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 		})
 		return
 	}
+	// log.Println(json.Password)
 
 	if err := json.ValidatingRegistration(); err != nil {
 		fmt.Println("error validating json", err)
@@ -56,7 +60,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"New User": json.Name + " has succesfully created account",
+		json.Name : " has succesfully created account",
 	})
 }
 
@@ -64,7 +68,6 @@ func (h *UserHandler) Login(c *gin.Context) {
 	var json model.UserLogin
 	if err := c.ShouldBindJSON(&json); err != nil {
 		log.Println("error json", err)
-
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "invalid request",
 		})
@@ -74,7 +77,6 @@ func (h *UserHandler) Login(c *gin.Context) {
 	user, err := h.userService.LoginUser(json.Email, json.Password)
 	if err != nil {
 		log.Println("error in userLoginService: ", err)
-
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "invalid credentials",
 		})
@@ -83,17 +85,24 @@ func (h *UserHandler) Login(c *gin.Context) {
 
 	errs := auth.JwtTokenCreate(c)
 	if errs != nil {
-		log.Println("error creating token", err)
+		log.Println("error creating jwt token: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
+		})
+		return
+	}
 
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "something went wrong",
+	err = h.sessionStore.SetSession(utils.REDIS_KEY_TOKEN, user)
+	if err != nil {
+		log.Println("error setting session: ", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "internal server error",
 		})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		user.Name: " logged in successfully",
+		user.Name: "successfully logged in",
 	})
-
 }
 
 func (h *UserHandler) Logout(c *gin.Context) {
@@ -106,16 +115,25 @@ func (h *UserHandler) Logout(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	errs := h.userService.Logout(cookie.Value, c)
+	auth.InvalidSession(cookie.Value)
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:   "session_id",
+		Value:  "",
+		MaxAge: -1,
+	})
+
+	token := utils.REDIS_KEY_TOKEN
+	errs := h.sessionStore.DeleteSession(token)
 	if errs != nil {
-		fmt.Println("Error while logging out")
+		log.Println("error deleting session: ", errs)
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "something went wrong",
+			"error": "internal server error",
 		})
 		return
 	}
-	c.Status(http.StatusOK)
+
+	c.Writer.WriteHeader(http.StatusOK)
 	c.JSON(http.StatusOK, gin.H{
-		"User": "logged out successfully",
+		"message": "logged out successfully",
 	})
 }
