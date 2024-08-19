@@ -40,7 +40,7 @@ A simple ToDo task API built with Go and MariaDB
     ### Task Endpoints
 
 * `POST /todo`: Create a new task for logged in user
-	+ Request Body: `{"task": "string", "description": "string" , "status" : "bool" , "UserID" : "int"}`
+	+ Request Body: `{"task": "string", "description": "string" , "status" : "bool"}`
 	+ Response: `{"message": "todo created successfully"}`
 * `GET /todo` : Get all exisiting task of logged in user
     + Params : `"ID" : "int"`
