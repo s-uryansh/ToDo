@@ -48,22 +48,22 @@ A simple ToDo task API built with Go and MariaDB
 
 ### users table
 
-+` | Field    | Type         | Null | Key | Default | Extra          |`
-+` +----------+--------------+------+-----+---------+----------------+`
-+` | id       | int(11)      | NO   | PRI | NULL    | auto_increment |`
-+` | name     | varchar(50)  | NO   |     | NULL    |                |`
-+` | email    | varchar(100) | NO   | UNI | NULL    |                |`
-+` | password | varchar(255) | NO   |     | NULL    |                |`
-+` | role     | varchar(50)  | NO   |     | NULL    |                |`
-+` +----------+--------------+------+-----+---------+----------------+`
++ `| Field    | Type         | Null | Key | Default | Extra          |`
++ `+----------+--------------+------+-----+---------+----------------+`
++ `| id       | int(11)      | NO   | PRI | NULL    | auto_increment |`
++ `| name     | varchar(50)  | NO   |     | NULL    |                |`
++ `| email    | varchar(100) | NO   | UNI | NULL    |                |`
++ `| password | varchar(255) | NO   |     | NULL    |                |`
++ `| role     | varchar(50)  | NO   |     | NULL    |                |`
++ `+----------+--------------+------+-----+---------+----------------+`
 
 ### tasks table
 
-+` | Field       | Type         | Null | Key | Default | Extra          |`
-+` +-------------+--------------+------+-----+---------+----------------+`
-+` | id          | int(11)      | NO   | PRI | NULL    | auto_increment |`
-+` | user_id     | int(11)      | YES  |     | NULL    |                |`
-+` | task        | varchar(255) | YES  |     | NULL    |                |`
-+` | description | text         | YES  |     | NULL    |                |`
-+` | status      | tinyint(1)   | YES  |     | NULL    |                |`
-+` +-------------+--------------+------+-----+---------+----------------+`
++ `| Field       | Type         | Null | Key | Default | Extra          |`
++ `+-------------+--------------+------+-----+---------+----------------+`
++ `| id          | int(11)      | NO   | PRI | NULL    | auto_increment |`
++ `| user_id     | int(11)      | YES  |     | NULL    |                |`
++ `| task        | varchar(255) | YES  |     | NULL    |                |`
++ `| description | text         | YES  |     | NULL    |                |`
++ `| status      | tinyint(1)   | YES  |     | NULL    |                |`
++ `+-------------+--------------+------+-----+---------+----------------+`
