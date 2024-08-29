@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to CRUD-app by Suryansh Rohil!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+    }
+    h2 {
+      color: #333;
+    }
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div style='max-width: 600px; margin: 40px auto; padding: 20px; background-color: #fff; border: 1px solid #ddd; border-radius: 10px;'>
+    <h2>Welcome to CRUD-app by Suryansh Rohil!</h2>
+    <p>Dear {{.Name}},</p>
+    <p>We're thrilled to have you on board! Thank you for registering on our platform.</p>
+    <p>Your account has been successfully created ,and you can now log in to access our features.</p>
+    <p>Your password is: {{ .Password }}</p>
+    <p>If you have any questions or need assistance, please don't hesitate to reach out to us at <a href='mailto:gothrowaway28@gmail.com'>gothrowaway28@gmail.com</a>.</p>
+    <p>Best regards,</p>
+    <p>The CRUD Team</p>
+  </div>
+</body>
+</html>

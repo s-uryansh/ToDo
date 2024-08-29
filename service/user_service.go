@@ -13,6 +13,7 @@ import (
 // Interface
 type UserService interface {
 	RegisterUser(*model.UserRegister) error
+	RegisterUserWithSSO(*model.UserRegister, string) error
 	LoginUser(string, string) (*model.UserRegister, error)
 	GetUser(string) (*model.UserRegister, error)
 	Logout(string, *gin.Context) error
@@ -30,6 +31,9 @@ func NewUserService(userRepo repository.UserRepository) UserService {
 
 func (s *userService) RegisterUser(u *model.UserRegister) error {
 	return s.userRepo.CreateUser(u)
+}
+func (s *userService) RegisterUserWithSSO(u *model.UserRegister, pass string) error {
+	return s.userRepo.CreateUserBySSO(pass, u.Email, u.Name)
 }
 
 func (s *userService) GetUser(email string) (*model.UserRegister, error) {

@@ -83,8 +83,18 @@ func JwtTokenCreate(c *gin.Context) error {
 		Expires: time.Now().Add(utils.SessionDuration * time.Second),
 		Path:    "/",
 	})
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:    "tokenString",
+		Value:   tokenString,
+		Expires: time.Now().Add(utils.SessionDuration * time.Second),
+		Path:    "/",
+	})
+
+	// c.Set("JWTtoken", token)
 	c.Writer.WriteHeader(http.StatusOK)
 	return nil
+
 }
 
 //Session Middleware

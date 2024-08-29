@@ -40,7 +40,7 @@ func NewRedisSessionStore(addr, password string, db int, prefix string, ttl time
 		return nil, fmt.Errorf("error connecting to Redis: %w", err)
 	}
 
-	log.Println("Connected to Redis:", addr)
+	// log.Println("Connected to Redis:", addr)
 
 	return &RedisSessionStore{
 		client: client,

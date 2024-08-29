@@ -13,14 +13,19 @@ var ErrInvalidPort = errors.New("invalid server port")
 
 // Defining Structs
 type Config struct {
-	DBHost     string `mapstructure:"DB_HOST"`
-	DBPort     int    `mapstructure:"DB_PORT"`
-	DBUser     string `mapstructure:"DB_USERNAME"`
-	DBPassword string `mapstructure:"DB_PASSWORD"`
-	DBName     string `mapstructure:"DB_NAME"`
-	RedisAddr  string `mapstructure:"REDIS_ADDR"`
-	JwtSecret  string `mapstructure:"JWT_SECRET"`
-	Port       int    `mapstructure:"PORT"`
+	DBHost          string `mapstructure:"DB_HOST"`
+	DBPort          int    `mapstructure:"DB_PORT"`
+	DBUser          string `mapstructure:"DB_USERNAME"`
+	DBPassword      string `mapstructure:"DB_PASSWORD"`
+	DBName          string `mapstructure:"DB_NAME"`
+	RedisAddr       string `mapstructure:"REDIS_ADDR"`
+	JwtSecret       string `mapstructure:"JWT_SECRET"`
+	Port            int    `mapstructure:"PORT"`
+	SSOEnabled      bool
+	SSOProvider     string
+	SSOClientID     string
+	SSOClientSecret string
+	SSOCallbackURL  string
 }
 
 //mapstructure = key for unmarshalling data from map

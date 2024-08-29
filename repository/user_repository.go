@@ -10,6 +10,7 @@ type UserRepository interface {
 	CreateUser(*model.UserRegister) error
 	// GetUser(int) (*model.UserRegister, error)
 	GetUserByEmail(string) (*model.UserRegister, error)
+	CreateUserBySSO(string, string, string) error
 	// UpdateUser(*model.User) error
 	// DeleteUser(string) error
 }
@@ -42,6 +43,13 @@ func (r *userRepository) GetUserByEmail(emial string) (*model.UserRegister, erro
 	return user, nil
 }
 
+func (r *userRepository) CreateUserBySSO(pass, email, name string) error {
+	// Generate a random password
+	password := pass
+	query := "INSERT INTO users_register (Name , Email , Password , Role) VALUES (?,?,?,?)"
+	_, err := r.db.Exec(query, name, email, password, "sso_user")
+	return err
+}
 
 // func (r *MySQLUserRepository) UpdateUser(u *model.User) error {
 // 	query := ""

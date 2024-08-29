@@ -60,7 +60,7 @@ func (h *UserHandler) Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		json.Name : " has succesfully created account",
+		json.Name: " has succesfully created account",
 	})
 }
 
@@ -100,6 +100,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		user.Name: "successfully logged in",
 	})

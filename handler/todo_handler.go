@@ -111,7 +111,15 @@ func (h *ToDoHandler) GetToDos(c *gin.Context) {
 			"Description": todo.Description,
 		})
 	}
-
+	// jwtToken, err := c.Request.Cookie("tokenString")
+	// if err != nil {
+	// 	log.Println("error getting jwt token: ", err)
+	// 	c.JSON(http.StatusInternalServerError, gin.H{
+	// 		"error": "internal server error",
+	// 	})
+	// 	return
+	// }
+	// fmt.Println("JWTTOKEN-String", jwtToken.Value)
 	c.JSON(http.StatusOK, gin.H{
 		"todos": todoList,
 	})
