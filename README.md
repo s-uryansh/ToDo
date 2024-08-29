@@ -15,6 +15,7 @@ A simple ToDo task API built with Go and MariaDB
 * User registration and login functionality
 * Storing user data with Redis
 * Task creation endpoint
+* Single Sign On with google
 
 ### Prerequisites
 
